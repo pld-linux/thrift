@@ -4,16 +4,16 @@
 # TODO: Add Mono ?
 # TODO: thrift-python -> python-trift ?
 Summary:	Framework for scalable cross-language services development
-Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania 
+Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
 Version:	0.2.0
 Release:	0.2
 License:	- enter GPL/GPL v2/GPL v3/LGPL/BSD/BSD-like/other license name here)
-Group:		Applications
+Group:		Development/Libraries
 # http://www.apache.net.pl/incubator/thrift/0.2.0-incubating/thrift-0.2.0-incubating.tar.gz
-Source0:	http://www.apache.net.pl/incubator/%{name}/%{version}-incubating/%{name}-%{version}-incubating.tar.gz
+Source0:	http://www.apache.net.pl/incubator/thrift/%{version}-incubating/%{name}-%{version}-incubating.tar.gz
 # Source0-md5:	9958c57c402c02171ba0bcc96183505c
-Patch0:         %{name}-Werror_strlcpy_fix.patch
+Patch0:		%{name}-Werror_strlcpy_fix.patch
 URL:		http://incubator.apache.org/thrift/
 BuildRequires:	boost-devel >= 1.33.1
 BuildRequires:	python-devel >= 2.4
@@ -22,11 +22,18 @@ BuildRequires:	zlib-devel >= 1.2.3
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Software framework for scalable cross-language services development. It combines a software stack with a code generation engine to build services that work efficiently and seamlessly between C++, Java, Python, PHP, Ruby, Erlang, Perl, Haskell, C#, Cocoa, Smalltalk, and OCaml.
+Software framework for scalable cross-language services development.
+It combines a software stack with a code generation engine to build
+services that work efficiently and seamlessly between C++, Java,
+Python, PHP, Ruby, Erlang, Perl, Haskell, C#, Cocoa, Smalltalk, and
+OCaml.
 
 %description -l pl.UTF-8
-Programowy szkielet dla rozwoju skalowanych usług dla różnych języków programowania. Zawiera oprogramowanie wraz silnikiem generowania kodu do tworzenie usług
-które spawnie działają pomiędzy C++, Javą, Pythonem, PHP, Rybym, Erlangiem, Perlem, Heskellem, C#, Cocoa, Smalltalikiem i Ocamlem.  
+Programowy szkielet dla rozwoju skalowanych usług dla różnych języków
+programowania. Zawiera oprogramowanie wraz silnikiem generowania kodu
+do tworzenie usług które spawnie działają pomiędzy C++, Javą,
+Pythonem, PHP, Rybym, Erlangiem, Perlem, Heskellem, C#, Cocoa,
+Smalltalikiem i Ocamlem.
 
 
 %package devel
@@ -45,7 +52,7 @@ Pliki nagłówkowe thrift.
 %package python
 Summary:	Python thrift interface
 Summary(pl.UTF-8):	Interfejs thrift dla Pythona
-Group:		Development/Libraries
+Group:		Development/Languages/Python
 Requires:	%{name} = %{version}-%{release}
 
 %description python
@@ -61,7 +68,7 @@ Interfejs thrift dla Pythona.
 
 %build
 %configure \
-    --without-ruby
+	--without-ruby
 %{__make}
 
 %install
