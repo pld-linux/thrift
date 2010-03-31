@@ -1,8 +1,9 @@
-# TODO: BR for java, ruby, perl, more general BR
-# TODO: Separate packages per each lang ?
-# TODO: Fix ruby install
-# TODO: Add Mono ?
-# TODO: thrift-python -> python-trift ?
+# TODO
+# - BR for java, ruby, perl, more general BR
+# - Separate packages per each lang ?
+# - Fix ruby install
+# - Add Mono ?
+# - thrift-python -> python-trift ?
 Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
@@ -16,9 +17,8 @@ Source0:	http://www.apache.net.pl/incubator/thrift/%{version}-incubating/%{name}
 Patch0:		%{name}-Werror_strlcpy_fix.patch
 URL:		http://incubator.apache.org/thrift/
 BuildRequires:	boost-devel >= 1.33.1
-BuildRequires:	python-devel >= 2.4
+BuildRequires:	python-devel >= 1:2.4
 BuildRequires:	zlib-devel >= 1.2.3
-#Requires:	-
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -35,7 +35,6 @@ do tworzenie usług które spawnie działają pomiędzy C++, Javą,
 Pythonem, PHP, Rybym, Erlangiem, Perlem, Heskellem, C#, Cocoa,
 Smalltalikiem i Ocamlem.
 
-
 %package devel
 Summary:	Header files for thrift
 Summary(pl.UTF-8):	Pliki nagłówkowe thrift
@@ -48,7 +47,6 @@ Header files for thrift.
 %description devel -l pl.UTF-8
 Pliki nagłówkowe thrift.
 
-
 %package python
 Summary:	Python thrift interface
 Summary(pl.UTF-8):	Interfejs thrift dla Pythona
@@ -60,7 +58,6 @@ Python thrift interface.
 
 %description python -l pl.UTF-8
 Interfejs thrift dla Pythona.
-
 
 %prep
 %setup -q
@@ -82,28 +79,19 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-# %doc AUTHORS CREDITS ChangeLog NEWS README THANKS TODO
 %attr(755,root,root) %{_bindir}/*
 
 %files devel
 %defattr(644,root,root,755)
-# %doc devel-doc/*
 %{_libdir}/lib%{name}.so
 %{_libdir}/lib%{name}.la
 %{_libdir}/lib%{name}z.so
 %{_libdir}/lib%{name}z.la
 %{_includedir}/%{name}
-# %{_aclocaldir}/*.m4
-# %{_pkgconfigdir}/*.pc
-
 
 %files python
 %defattr(644,root,root,755)
-# %doc AUTHORS CREDITS ChangeLog NEWS README THANKS TODO
-# change %{py_sitedir} to %{py_sitescriptdir} for 'noarch' packages!
-%{py_sitedir}/%{name}
-# %{py_sitedir}/*.py[co]
-# %attr(755,root,root) %{py_sitedir}/*.so
+%{py_sitedir}
 %if "%{py_ver}" > "2.4"
 %{py_sitedir}/Thrift-*.egg-info
 %endif
