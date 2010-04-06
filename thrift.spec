@@ -20,7 +20,11 @@ Source0:	http://www.apache.net.pl/incubator/thrift/%{version}-incubating/%{name}
 # Source0-md5:	9958c57c402c02171ba0bcc96183505c
 Patch0:		%{name}-Werror_strlcpy_fix.patch
 URL:		http://incubator.apache.org/thrift/
+BuildRequires:	bison
 BuildRequires:	boost-devel >= 1.33.1
+BuildRequires:	flex
+BuildRequires:	libevent-devel
+BuildRequires:	pkgconfig
 BuildRequires:	python-devel >= 1:2.4
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
