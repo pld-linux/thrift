@@ -1,23 +1,23 @@
 # TODO
 # - BR for java, ruby, perl, more general BR
 # - package -libs & ldconfig
-# - Separate packages per each lang
+# - Separate packages per each language
 # - fix perl: missing vendordir on install
 # - fix java: not installing to %{_javadir}
-# - Fix ruby install
-# - Add Mono
 # - avoid downloading from net when build building java
+# - Fix ruby install
+# - Fix PHP build
+# - Add Mono
 # - libthriftnb.so lacks some libs when linking
 Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
-Version:	0.2.0
-Release:	0.2
+Version:	0.5.0
+Release:	0.1
 License:	Apache v2.0
 Group:		Development/Libraries
-# http://www.apache.net.pl/incubator/thrift/0.2.0-incubating/thrift-0.2.0-incubating.tar.gz
-Source0:	http://www.apache.net.pl/incubator/thrift/%{version}-incubating/%{name}-%{version}-incubating.tar.gz
-# Source0-md5:	9958c57c402c02171ba0bcc96183505c
+Source0:	http://ftp.tpnet.pl/vol/d1/apache//incubator/thrift/%{version}-incubating/thrift-%{version}.tar.gz
+# Source0-md5:	14c97adefb4efc209285f63b4c7f51f2
 Patch0:		%{name}-Werror_strlcpy_fix.patch
 URL:		http://incubator.apache.org/thrift/
 BuildRequires:	bison
@@ -75,7 +75,11 @@ Interfejs thrift dla Pythona.
 
 %build
 %configure \
-	--without-ruby
+	--without-ruby \
+	--without-php \
+	--without-java \
+	--without-php_extension
+	
 %{__make}
 
 %install
