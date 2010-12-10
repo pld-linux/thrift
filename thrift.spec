@@ -8,12 +8,14 @@
 # - Fix ruby install
 # - Fix PHP build
 # - Add Mono
-# - libthriftnb.so lacks some libs when linking
+# - Fix c++ - libthriftnb.so lacks some libs when linking
+# - Consider rename current -devel to thrift-cpp ?
+
 Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
 Version:	0.5.0
-Release:	0.1
+Release:	1
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://ftp.tpnet.pl/vol/d1/apache//incubator/thrift/%{version}-incubating/thrift-%{version}.tar.gz
@@ -45,17 +47,17 @@ do tworzenie usług które spawnie działają pomiędzy C++, Javą,
 Pythonem, PHP, Rybym, Erlangiem, Perlem, Heskellem, C#, Cocoa,
 Smalltalikiem i Ocamlem.
 
-%package devel
-Summary:	Header files for thrift
-Summary(pl.UTF-8):	Pliki nagłówkowe thrift
-Group:		Development/Libraries
-Requires:	%{name} = %{version}-%{release}
+# %package devel
+# Summary:	C++ interface for thrift
+# Summary(pl.UTF-8):	Pliki nagłówkowe i bibliotek iterfejsu C++ thrift
+# Group:		Development/Libraries
+# Requires:	%{name} = %{version}-%{release}
 
-%description devel
-Header files for thrift.
+# %description devel
+# Header and libarary files for C++ thrift inteface.
 
-%description devel -l pl.UTF-8
-Pliki nagłówkowe thrift.
+# %description devel -l pl.UTF-8
+# Pliki nagłówkowe i bibliotek iterfejsu C++ thrift.
 
 %package -n python-%{name}
 Summary:	Python thrift interface
@@ -75,10 +77,14 @@ Interfejs thrift dla Pythona.
 
 %build
 %configure \
-	--without-ruby \
-	--without-php \
+	--without-cpp \
+	--without-csharp \
+	--without-erlang \
+	--without-heskell \
 	--without-java \
-	--without-php_extension
+	--without-php \
+	--without-php_extension \
+	--without-ruby 
 	
 %{__make}
 
@@ -99,16 +105,16 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/thrift
 
-%files devel
-%defattr(644,root,root,755)
-%{_libdir}/libthrift.so
-%{_libdir}/libthrift.la
-%{_libdir}/libthriftz.so
-%{_libdir}/libthriftz.la
-%{_includedir}/%{name}
-%{_pkgconfigdir}/thrift-nb.pc
-%{_pkgconfigdir}/thrift-z.pc
-%{_pkgconfigdir}/thrift.pc
+# %files devel
+# %defattr(644,root,root,755)
+# %{_libdir}/libthrift.so
+# %{_libdir}/libthrift.la
+# %{_libdir}/libthriftz.so
+# %{_libdir}/libthriftz.la
+# %{_includedir}/%{name}
+# %{_pkgconfigdir}/thrift-nb.pc
+# %{_pkgconfigdir}/thrift-z.pc
+# %{_pkgconfigdir}/thrift.pc
 
 %files -n python-%{name}
 %defattr(644,root,root,755)
