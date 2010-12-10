@@ -15,7 +15,7 @@ Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
 Version:	0.5.0
-Release:	1.1
+Release:	2
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://ftp.tpnet.pl/vol/d1/apache//incubator/thrift/%{version}-incubating/thrift-%{version}.tar.gz
@@ -44,7 +44,7 @@ OCaml.
 Programowy szkielet dla rozwoju skalowanych usług dla różnych języków
 programowania. Zawiera oprogramowanie wraz silnikiem generowania kodu
 do tworzenie usług które spawnie działają pomiędzy C++, Javą,
-Pythonem, PHP, Rybym, Erlangiem, Perlem, Heskellem, C#, Cocoa,
+Pythonem, PHP, Rybym, Erlangiem, Perlem, Haskellem, C#, Cocoa,
 Smalltalikiem i Ocamlem.
 
 # %package devel
@@ -80,7 +80,7 @@ Interfejs thrift dla Pythona.
 	--without-cpp \
 	--without-csharp \
 	--without-erlang \
-	--without-heskell \
+	--without-haskell \
 	--without-java \
 	--without-perl \
 	--without-php \
