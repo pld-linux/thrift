@@ -15,7 +15,7 @@ Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
 Version:	0.5.0
-Release:	1
+Release:	1.1
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://ftp.tpnet.pl/vol/d1/apache//incubator/thrift/%{version}-incubating/thrift-%{version}.tar.gz
@@ -82,6 +82,7 @@ Interfejs thrift dla Pythona.
 	--without-erlang \
 	--without-heskell \
 	--without-java \
+	--without-perl \
 	--without-php \
 	--without-php_extension \
 	--without-ruby 
