@@ -15,10 +15,10 @@ Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
 Version:	0.5.0
-Release:	2
+Release:	3
 License:	Apache v2.0
 Group:		Development/Libraries
-Source0:	http://ftp.tpnet.pl/vol/d1/apache//incubator/thrift/%{version}-incubating/thrift-%{version}.tar.gz
+Source0:	http://ftp.tpnet.pl/vol/d1/apache//incubator/thrift/%{version}-incubating/%{name}-%{version}.tar.gz
 # Source0-md5:	14c97adefb4efc209285f63b4c7f51f2
 Patch0:		%{name}-Werror_strlcpy_fix.patch
 URL:		http://incubator.apache.org/thrift/
@@ -85,8 +85,8 @@ Interfejs thrift dla Pythona.
 	--without-perl \
 	--without-php \
 	--without-php_extension \
-	--without-ruby 
-	
+	--without-ruby
+
 %{__make}
 
 %install
@@ -119,7 +119,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -n python-%{name}
 %defattr(644,root,root,755)
-%dir %{py_sitedir}
 %dir %{py_sitedir}/%{name}
 %dir %{py_sitedir}/%{name}/protocol
 %{py_sitedir}/%{name}/protocol/*.py[co]
