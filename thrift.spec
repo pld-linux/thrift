@@ -13,7 +13,7 @@ Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
 Version:	0.5.0
-Release:	3.9
+Release:	3.91
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://ftp.tpnet.pl/vol/d1/apache//incubator/thrift/%{version}-incubating/%{name}-%{version}.tar.gz
@@ -53,7 +53,7 @@ Smalltalikiem i Ocamlem.
 Summary:	C++ header files
 Summary(pl.UTF-8):	Pliki nagłówkowe i bibliotek iterfejsu C++ thrift
 Group:		Development/Libraries
-Requires:	%{name}-cpp = %{version}-%{release}
+Requires:	%{name}-libs = %{version}-%{release}
 
 %description devel
 Header and libarary files for C++ thrift inteface.
