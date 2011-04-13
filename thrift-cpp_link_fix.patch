@@ -1,0 +1,14 @@
+--- thrift-0.5.0/lib/cpp/Makefile.am.cpp-link-fix	2011-04-13 11:46:42.019642012 +0200
++++ thrift-0.5.0/lib/cpp/Makefile.am	2011-04-13 11:51:04.054913018 +0200
+@@ -73,9 +73,10 @@ libthrift_la_SOURCES = src/Thrift.cpp \
+                        src/processor/PeekProcessor.cpp
+ 
+ libthriftnb_la_SOURCES = src/server/TNonblockingServer.cpp
++libthriftnb_la_LIBADD = -levent -lthrift
+ 
+ libthriftz_la_SOURCES = src/transport/TZlibTransport.cpp
+-
++libthriftz_la_LIBADD = -lz -lthrift
+ 
+ # Flags for the various libraries
+ libthriftnb_la_CPPFLAGS = $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS)

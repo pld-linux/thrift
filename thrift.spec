@@ -1,6 +1,5 @@
 # TODO
 # - BR for java, ruby, perl, more general BR
-# - package -libs & ldconfig
 # - Separate packages per each language
 # - fix perl: missing vendordir on install
 # - fix java: not installing to %{_javadir}
@@ -8,20 +7,22 @@
 # - Fix ruby install
 # - Fix PHP build
 # - Add Mono
-# - Fix c++ - libthriftnb.so lacks some libs when linking
-# - Consider rename current -devel to thrift-cpp ?
+# - Fix parallel build make.
 
 Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
 Version:	0.5.0
-Release:	3
+Release:	3.9
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://ftp.tpnet.pl/vol/d1/apache//incubator/thrift/%{version}-incubating/%{name}-%{version}.tar.gz
 # Source0-md5:	14c97adefb4efc209285f63b4c7f51f2
 Patch0:		%{name}-Werror_strlcpy_fix.patch
+Patch1:		%{name}-cpp_link_fix.patch
 URL:		http://incubator.apache.org/thrift/
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	bison
 BuildRequires:	boost-devel >= 1.33.1
 BuildRequires:	flex
@@ -47,17 +48,45 @@ do tworzenie usług które spawnie działają pomiędzy C++, Javą,
 Pythonem, PHP, Rybym, Erlangiem, Perlem, Haskellem, C#, Cocoa,
 Smalltalikiem i Ocamlem.
 
-# %package devel
-# Summary:	C++ interface for thrift
-# Summary(pl.UTF-8):	Pliki nagłówkowe i bibliotek iterfejsu C++ thrift
-# Group:		Development/Libraries
-# Requires:	%{name} = %{version}-%{release}
 
-# %description devel
-# Header and libarary files for C++ thrift inteface.
+%package devel
+Summary:	C++ header files
+Summary(pl.UTF-8):	Pliki nagłówkowe i bibliotek iterfejsu C++ thrift
+Group:		Development/Libraries
+Requires:	%{name}-cpp = %{version}-%{release}
 
-# %description devel -l pl.UTF-8
-# Pliki nagłówkowe i bibliotek iterfejsu C++ thrift.
+%description devel
+Header and libarary files for C++ thrift inteface.
+
+%description devel -l pl.UTF-8
+Pliki nagłówkowe i bibliotek iterfejsu C++ thrift.
+
+
+%package static
+Summary:	Thrift C++ static libraries
+Summary(pl.UTF-8):	Biblioteki statyczne iterfejsu C++ thrift
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+
+%description static
+Static libarary files for C++ thrift inteface.
+
+%description static -l pl.UTF-8
+Statyczne biblioteki iterfejsu C++ thrift.
+
+
+%package -n %{name}-libs
+Summary:	C++ thrift interface libraries
+Summary(pl.UTF-8):	Interfejs thrift dla C++
+Group:		Development/Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description -n %{name}-libs
+C++ thrift interface libraries
+
+%description -n %{name}-libs -l pl.UTF-8
+Biblioteki interfejsu thrift dla C++.
+
 
 %package -n python-%{name}
 Summary:	Python thrift interface
@@ -74,10 +103,14 @@ Interfejs thrift dla Pythona.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
+# %{__aclocal}
+# %{__autoconf}
+%{__autoheader}
+%{__automake}
 %configure \
-	--without-cpp \
 	--without-csharp \
 	--without-erlang \
 	--without-haskell \
@@ -87,7 +120,7 @@ Interfejs thrift dla Pythona.
 	--without-php_extension \
 	--without-ruby
 
-%{__make}
+%{__make} -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -102,20 +135,40 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post   libs -p /sbin/ldconfig
+%postun libs -p /sbin/ldconfig
+
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/thrift
 
-# %files devel
-# %defattr(644,root,root,755)
-# %{_libdir}/libthrift.so
-# %{_libdir}/libthrift.la
-# %{_libdir}/libthriftz.so
-# %{_libdir}/libthriftz.la
-# %{_includedir}/%{name}
-# %{_pkgconfigdir}/thrift-nb.pc
-# %{_pkgconfigdir}/thrift-z.pc
-# %{_pkgconfigdir}/thrift.pc
+%files devel
+%defattr(644,root,root,755)
+%{_libdir}/libthrift.la
+%{_libdir}/libthriftz.la
+%{_libdir}/libthriftnb.la
+%attr(755,root,root) %{_libdir}/libthrift.so
+%attr(755,root,root) %{_libdir}/libthriftz.so
+%attr(755,root,root) %{_libdir}/libthriftnb.so
+%{_includedir}/%{name}
+%{_pkgconfigdir}/thrift-nb.pc
+%{_pkgconfigdir}/thrift-z.pc
+%{_pkgconfigdir}/thrift.pc
+
+%files static
+%defattr(644,root,root,755)
+%{_libdir}/libthrift.a
+%{_libdir}/libthriftz.a
+%{_libdir}/libthriftnb.a
+
+%files libs
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libthrift.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libthrift.so.0
+%attr(755,root,root) %{_libdir}/libthriftz.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libthriftz.so.0
+%attr(755,root,root) %{_libdir}/libthriftnb.so.*.*.*
+%attr(755,root,root) %ghost %{_libdir}/libthriftnb.so.0
 
 %files -n python-%{name}
 %defattr(644,root,root,755)
