@@ -1,12 +1,11 @@
-diff -urN thrift-0.2.0.org//lib/rb/ext/extconf.rb thrift-0.2.0/lib/rb/ext/extconf.rb
---- thrift-0.2.0.org//lib/rb/ext/extconf.rb	2009-03-20 05:21:39.000000000 +0100
-+++ thrift-0.2.0/lib/rb/ext/extconf.rb	2010-03-28 22:31:42.000000000 +0200
-@@ -19,7 +19,7 @@
+--- thrift-0.9.1/lib/rb/ext/extconf.rb~	2013-08-15 17:04:29.000000000 +0300
++++ thrift-0.9.1/lib/rb/ext/extconf.rb	2013-10-06 02:22:38.662385994 +0300
+@@ -24,7 +24,7 @@
  
- require 'mkmf'
+   $ARCH_FLAGS = Config::CONFIG['CFLAGS'].scan( /(-arch )(\S+)/ ).map{|x,y| x + y + ' ' }.join('')
  
--$CFLAGS = "-g -O2 -Wall -Werror"
-+$CFLAGS = "-g -O2 -Wall"
+-  $CFLAGS = "-fsigned-char -g -O2 -Wall -Werror " + $ARCH_FLAGS
++  $CFLAGS = "-fsigned-char -g -O2 -Wall " + $ARCH_FLAGS
  
- have_func("strlcpy", "string.h")
+   have_func("strlcpy", "string.h")
  
