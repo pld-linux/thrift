@@ -31,6 +31,7 @@
 %bcond_with	go		# build the Go library
 %bcond_with	d		# build the D library
 
+%define		php_min_version 5.3.0
 Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
@@ -111,6 +112,7 @@ Summary:	PHP Thrift interface
 Summary(pl.UTF-8):	Interfejs Thrift dla PHP
 Group:		Development/Languages/PHP
 Requires:	%{name} = %{version}-%{release}
+Requires:	php(core) >= %{php_min_version}
 
 %description -n php-%{name}
 PHP Thrift interface.
