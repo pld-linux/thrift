@@ -7,7 +7,6 @@
 # - fix java: not installing to %{_javadir}
 # - avoid downloading from net when build building java
 # - Fix ruby install
-# - Fix PHP build
 # - Add Mono
 # - Fix parallel build make.
 #
@@ -25,7 +24,7 @@
 %bcond_with	erlang		# build the Erlang library
 %bcond_without	python		# build the Python library
 %bcond_with	perl		# build the Perl library
-%bcond_with	php 		# build the PHP library
+%bcond_without	php 		# build the PHP library
 %bcond_with	php_extension	# build the PHP_EXTENSION library
 %bcond_with	ruby		# build the Ruby library
 %bcond_with	haskell		# build the Haskell library
@@ -107,6 +106,15 @@ C++ thrift interface libraries
 %description libs -l pl.UTF-8
 Biblioteki interfejsu thrift dla C++.
 
+%package -n php-%{name}
+Summary:	PHP Thrift interface
+Summary(pl.UTF-8):	Interfejs Thrift dla PHP
+Group:		Development/Languages/PHP
+Requires:	%{name} = %{version}-%{release}
+
+%description -n php-%{name}
+PHP Thrift interface.
+
 %package -n python-%{name}
 Summary:	Python thrift interface
 Summary(pl.UTF-8):	Interfejs thrift dla Pythona
@@ -130,6 +138,7 @@ Interfejs thrift dla Pythona.
 %{__autoheader}
 %{__automake}
 %configure \
+	PHP_PREFIX=%{php_data_dir} \
 	%{__with_without cpp} \
 	%{__with_without qt4} \
 	%{__with_without c_glib} \
@@ -171,7 +180,6 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/thrift
-
 %if %{with cpp}
 %files libs
 %defattr(644,root,root,755)
@@ -197,6 +205,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libthrift.a
 %{_libdir}/libthriftnb.a
 %{_libdir}/libthriftz.a
+%endif
+
+%if %{with php}
+%files -n php-%{name}
+%defattr(644,root,root,755)
+%{php_data_dir}/Thrift
 %endif
 
 %if %{with python}
