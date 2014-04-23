@@ -10,6 +10,14 @@
 # - Add Mono
 # - Fix parallel build make.
 #
+# TODO (2) - fix or disable
+# - java - br, build, files - icedtea7 ?
+# - erlang - build, files
+# - php_extension - br, build
+# - ruby - build, files, some gems required for build?
+# - haskell - build, files
+# - d - needs working dmd or gdm to build
+#
 # Conditional build:
 #
 # generic options
@@ -17,26 +25,28 @@
 #
 # language options
 %bcond_without	cpp		# build the C++ library
-%bcond_with	qt4		# build the Qt library
-%bcond_with	c_glib		# build the C (GLib) library
-%bcond_with	csharp		# build the C# library
+%bcond_without	qt4		# build the Qt library
+%bcond_without	c_glib		# build the C (GLib) library
+%bcond_without	csharp		# build the C# library
 %bcond_with	java		# build the Java library
 %bcond_with	erlang		# build the Erlang library
 %bcond_without	python		# build the Python library
-%bcond_with	perl		# build the Perl library
+%bcond_without	perl		# build the Perl library
 %bcond_without	php 		# build the PHP library
 %bcond_with	php_extension	# build the PHP_EXTENSION library
 %bcond_with	ruby		# build the Ruby library
 %bcond_with	haskell		# build the Haskell library
-%bcond_with	go		# build the Go library
+%bcond_without	go		# build the Go library
 %bcond_with	d		# build the D library
+
+%include	/usr/lib/rpm/macros.perl
 
 %define		php_min_version 5.3.0
 Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
 Version:	0.9.1
-Release:	0.1
+Release:	0.4
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://www.apache.org/dist/thrift/%{version}/%{name}-%{version}.tar.gz
@@ -55,7 +65,55 @@ BuildRequires:	python-devel >= 1:2.4
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
 BuildRequires:	zlib-devel >= 1.2.3
+%if %{with qt4}
+BuildRequires:	QtNetwork-devel
+%endif
+%if %{with c_glib}
+BuildRequires:	glib2-devel
+%endif
+%if %{with csharp}
+BuildRequires:	mono-devel
+BuildRequires:	mono-csharp
+%endif
+%if %{with java}
+BuildRequires:	java-gcj-compat-devel
+BuildRequires:	java-ivy
+%endif
+%if %{with python}
+BuildRequires:	python
+BuildRequires:	python-TwistedCore
+%endif
+%if %{with perl}
+BuildRequires:	perl-base
+BuildRequires:	perl-Bit-Vector
+%endif
+%if %{with php}
+BuildRequires:	php-devel
+BuildRequires:	php-program
+BuildRequires:	php-phpunit-PHPUnit
+%endif
+%if %{with erlang}
+BuildRequires:	erlang
+%endif
+%if %{with ruby}
+BuildRequires:	ruby
+BuildRequires:	ruby-rake
+BuildRequires:	ruby-bundler
+%endif
+%if %{with haskell}
+BuildRequires:	ghc
+BuildRequires:	ghc-haskell-platform
+%endif
+%if %{with go}
+BuildRequires:	golang
+%endif
+%if %{with d}
+BuildRequires:	dmd
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
+
+# library use symbols provided by the glib2 libraries
+%define         skip_post_check_so      libthrift_c_glib.so.*
 
 %description
 The Apache Thrift software framework, for scalable cross-language
@@ -129,6 +187,18 @@ Python thrift interface.
 %description -n python-%{name} -l pl.UTF-8
 Interfejs thrift dla Pythona.
 
+%package -n perl-Thrift
+Summary:	Perl thrift interface
+Summary(pl.UTF-8):	Interfejs thrift dla Perla
+Group:		Development/Languages/Perl
+Requires:	%{name} = %{version}-%{release}
+
+%description -n perl-Thrift
+Perl thrift interface.
+
+%description -n perl-Thrift -l pl.UTF-8
+Interfejs thrift dla Perla.
+
 %prep
 %setup -q
 #%patch0 -p1
@@ -141,6 +211,7 @@ Interfejs thrift dla Pythona.
 %{__automake}
 %configure \
 	PHP_PREFIX=%{php_data_dir} \
+	PERL_PREFIX=%{perl_vendorlib} \
 	%{__with_without cpp} \
 	%{__with_without qt4} \
 	%{__with_without c_glib} \
@@ -161,7 +232,7 @@ Interfejs thrift dla Pythona.
 	--with-zlib \
 	%{__with_without tests}
 
-%{__make} -j1
+%{__make} -j1 
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -172,6 +243,10 @@ rm -rf $RPM_BUILD_ROOT
 %py_ocomp $RPM_BUILD_ROOT%{py_sitedir}
 %py_comp $RPM_BUILD_ROOT%{py_sitedir}
 %py_postclean
+
+%if %{with perl}
+%{__mv} $RPM_BUILD_ROOT%{perl_vendorlib}/lib/perl5/Thrift{,.pm} $RPM_BUILD_ROOT%{perl_vendorlib}
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -188,6 +263,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libthrift-%{version}.so
 %{_libdir}/libthriftnb-%{version}.so
 %{_libdir}/libthriftz-%{version}.so
+%if %{with qt4}
+%{_libdir}/libthriftqt-%{version}.so
+%endif
+%if %{with c_glib}
+%{_libdir}/libthrift_c_glib.so.*
+%endif
 
 %files devel
 %defattr(644,root,root,755)
@@ -201,12 +282,28 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/thrift-nb.pc
 %{_pkgconfigdir}/thrift-z.pc
 %{_pkgconfigdir}/thrift.pc
+%if %{with qt4}
+%{_libdir}/libthriftqt.so
+%{_libdir}/libthriftqt.la
+%{_pkgconfigdir}/thrift-qt.pc
+%endif
+%if %{with c_glib}
+%{_libdir}/libthrift_c_glib.so
+%{_libdir}/libthrift_c_glib.la
+%{_pkgconfigdir}/thrift_c_glib.pc
+%endif
 
 %files static
 %defattr(644,root,root,755)
 %{_libdir}/libthrift.a
 %{_libdir}/libthriftnb.a
 %{_libdir}/libthriftz.a
+%if %{with qt4}
+%{_libdir}/libthriftqt.a
+%endif
+%if %{with c_glib}
+%{_libdir}/libthrift_c_glib.a
+%endif
 %endif
 
 %if %{with php}
@@ -230,4 +327,12 @@ rm -rf $RPM_BUILD_ROOT
 %if "%{py_ver}" > "2.4"
 %{py_sitedir}/thrift-%{version}-py*.egg-info
 %endif
+%endif
+
+%if %{with perl}
+%files -n perl-Thrift
+%defattr(644,root,root,755)
+%dir %{perl_vendorlib}/Thrift
+%{perl_vendorlib}/Thrift.pm
+%{perl_vendorlib}/Thrift/*.pm
 %endif
