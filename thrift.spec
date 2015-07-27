@@ -41,6 +41,10 @@
 %bcond_without	go		# build the Go library
 %bcond_with	d		# build the D library
 
+%if %{with perl}
+%define		pdir	Thrift
+%endif
+
 %if 0%{!?php_name:1}
 %define		php_name	php55
 %endif
