@@ -39,9 +39,12 @@
 %bcond_without	go		# build the Go library
 %bcond_with	d		# build the D library
 
-%include	/usr/lib/rpm/macros.perl
+%if 0%{!?php_name:1}
+%define		php_name	php55
+%endif
 
 %define		php_min_version 5.3.0
+%include	/usr/lib/rpm/macros.perl
 Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
@@ -72,8 +75,8 @@ BuildRequires:	QtNetwork-devel
 BuildRequires:	glib2-devel
 %endif
 %if %{with csharp}
-BuildRequires:	mono-devel
 BuildRequires:	mono-csharp
+BuildRequires:	mono-devel
 %endif
 %if %{with java}
 BuildRequires:	java-gcj-compat-devel
@@ -84,21 +87,21 @@ BuildRequires:	python
 BuildRequires:	python-TwistedCore
 %endif
 %if %{with perl}
-BuildRequires:	perl-base
 BuildRequires:	perl-Bit-Vector
+BuildRequires:	perl-base
 %endif
 %if %{with php}
-BuildRequires:	php-devel
-BuildRequires:	php-program
-BuildRequires:	php-phpunit-PHPUnit
+BuildRequires:	%{php_name}-cli
+BuildRequires:	%{php_name}-devel
+BuildRequires:	phpunit
 %endif
 %if %{with erlang}
 BuildRequires:	erlang
 %endif
 %if %{with ruby}
 BuildRequires:	ruby
-BuildRequires:	ruby-rake
 BuildRequires:	ruby-bundler
+BuildRequires:	ruby-rake
 %endif
 %if %{with haskell}
 BuildRequires:	ghc
@@ -211,6 +214,7 @@ Interfejs thrift dla Perla.
 %{__automake}
 %configure \
 	PHP_PREFIX=%{php_data_dir} \
+	PHP=%{__php} \
 	PERL_PREFIX=%{perl_vendorlib} \
 	%{__with_without cpp} \
 	%{__with_without qt4} \
@@ -232,17 +236,18 @@ Interfejs thrift dla Perla.
 	--with-zlib \
 	%{__with_without tests}
 
-%{__make} -j1 
+%{__make} -j1
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+%if %{with python}
 %py_ocomp $RPM_BUILD_ROOT%{py_sitedir}
 %py_comp $RPM_BUILD_ROOT%{py_sitedir}
 %py_postclean
+%endif
 
 %if %{with perl}
 %{__mv} $RPM_BUILD_ROOT%{perl_vendorlib}/lib/perl5/Thrift{,.pm} $RPM_BUILD_ROOT%{perl_vendorlib}
@@ -257,6 +262,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/thrift
+
 %if %{with cpp}
 %files libs
 %defattr(644,root,root,755)
