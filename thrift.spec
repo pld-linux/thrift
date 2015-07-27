@@ -30,6 +30,8 @@
 %bcond_without	csharp		# build the C# library
 %bcond_with	java		# build the Java library
 %bcond_with	erlang		# build the Erlang library
+%bcond_with	nodejs		# build nodejs library
+%bcond_with	lua		# build Lua library
 %bcond_without	python		# build the Python library
 %bcond_without	perl		# build the Perl library
 %bcond_without	php 		# build the PHP library
@@ -48,19 +50,19 @@
 Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
-Version:	0.9.1
+Version:	0.9.2
 Release:	0.4
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://www.apache.org/dist/thrift/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	d2e46148f6e800a9492dbd848c66ab6e
+# Source0-md5:	89f63cc4d0100912f4a1f8a9dee63678
 Patch0:		%{name}-Werror_strlcpy_fix.patch
 Patch1:		%{name}-cpp_link_fix.patch
 URL:		http://thrift.apache.org/
 BuildRequires:	autoconf
-BuildRequires:	automake
-BuildRequires:	bison
-BuildRequires:	boost-devel >= 1.33.1
+BuildRequires:	automake >= 1:1.13
+BuildRequires:	bison >= 2.5
+BuildRequires:	boost-devel >= 1.54.0
 BuildRequires:	flex
 BuildRequires:	libevent-devel
 BuildRequires:	pkgconfig
@@ -82,12 +84,20 @@ BuildRequires:	mono-devel
 BuildRequires:	java-gcj-compat-devel
 BuildRequires:	java-ivy
 %endif
+%if %{with lua}
+BuildRequires:	lua51-devel
+%endif
+%if %{with nodejs}
+BuildRequires:	nodejs
+BuildRequires:	npm
+%endif
 %if %{with python}
 BuildRequires:	python
 BuildRequires:	python-TwistedCore
 %endif
 %if %{with perl}
 BuildRequires:	perl-Bit-Vector
+BuildRequires:	perl-Class-Accessor
 BuildRequires:	perl-base
 %endif
 %if %{with php}
@@ -101,7 +111,6 @@ BuildRequires:	erlang
 %if %{with ruby}
 BuildRequires:	ruby
 BuildRequires:	ruby-bundler
-BuildRequires:	ruby-rake
 %endif
 %if %{with haskell}
 BuildRequires:	ghc
@@ -231,9 +240,12 @@ Interfejs thrift dla Perla.
 	%{__with_without haskell} \
 	%{__with_without go} \
 	%{__with_without d} \
+	--enable-libs \
 	--with-boost \
 	--with-libevent \
 	--with-zlib \
+	--disable-tutorial \
+	--disable-tests \
 	%{__with_without tests}
 
 %{__make} -j1
