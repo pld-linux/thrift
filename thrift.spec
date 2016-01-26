@@ -17,6 +17,7 @@
 # - ruby - build, files, some gems required for build?
 # - haskell - build, files
 # - d - needs working dmd or gdm to build
+# - bcond_without	qt5		# build the Qt5 library
 #
 # Conditional build:
 #
@@ -25,7 +26,8 @@
 #
 # language options
 %bcond_without	cpp		# build the C++ library
-%bcond_without	qt4		# build the Qt library
+%bcond_without	qt4		# build the Qt4 library
+# %%bcond_without	qt5		# build the Qt5 library
 %bcond_without	c_glib		# build the C (GLib) library
 %bcond_without	csharp		# build the C# library
 %bcond_with	java		# build the Java library
@@ -54,12 +56,12 @@
 Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
-Version:	0.9.2
-Release:	0.4
+Version:	0.9.3
+Release:	1
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://www.apache.org/dist/thrift/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	89f63cc4d0100912f4a1f8a9dee63678
+# Source0-md5:	88d667a8ae870d5adeca8cb7d6795442
 Patch0:		%{name}-Werror_strlcpy_fix.patch
 Patch1:		%{name}-cpp_link_fix.patch
 URL:		http://thrift.apache.org/
@@ -285,6 +287,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libthrift-%{version}.so
 %{_libdir}/libthriftnb-%{version}.so
 %{_libdir}/libthriftz-%{version}.so
+%{_libdir}/libthriftqt5-%{version}.so
 %if %{with qt4}
 %{_libdir}/libthriftqt-%{version}.so
 %endif
@@ -309,6 +312,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libthriftqt.la
 %{_pkgconfigdir}/thrift-qt.pc
 %endif
+%{_libdir}/libthriftqt5.so
+%{_libdir}/libthriftqt5.la
+%{_pkgconfigdir}/thrift-qt5.pc
+
 %if %{with c_glib}
 %{_libdir}/libthrift_c_glib.so
 %{_libdir}/libthrift_c_glib.la
@@ -323,6 +330,7 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with qt4}
 %{_libdir}/libthriftqt.a
 %endif
+%{_libdir}/libthriftqt5.a
 %if %{with c_glib}
 %{_libdir}/libthrift_c_glib.a
 %endif
