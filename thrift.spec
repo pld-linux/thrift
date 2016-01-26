@@ -33,7 +33,7 @@
 %bcond_with	java		# build the Java library
 %bcond_with	erlang		# build the Erlang library
 %bcond_with	nodejs		# build nodejs library
-%bcond_with	lua		# build Lua library
+%bcond_without	lua		# build Lua library
 %bcond_without	python		# build the Python library
 %bcond_without	perl		# build the Perl library
 %bcond_without	php 		# build the PHP library
@@ -57,7 +57,7 @@ Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
 Version:	0.9.3
-Release:	1
+Release:	2
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://www.apache.org/dist/thrift/%{version}/%{name}-%{version}.tar.gz
