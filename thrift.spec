@@ -17,7 +17,6 @@
 # - ruby - build, files, some gems required for build?
 # - haskell - build, files
 # - d - needs working dmd or gdm to build
-# - bcond_without	qt5		# build the Qt5 library
 #
 # Conditional build:
 #
@@ -26,21 +25,21 @@
 #
 # language options
 %bcond_without	cpp		# build the C++ library
-%bcond_without	qt4		# build the Qt4 library
-# %%bcond_without	qt5		# build the Qt5 library
+%bcond_with	qt4		# build the Qt4 library
+%bcond_with	qt5		# build the Qt5 library
 %bcond_without	c_glib		# build the C (GLib) library
-%bcond_without	csharp		# build the C# library
+%bcond_with	csharp		# build the C# library
 %bcond_with	java		# build the Java library
 %bcond_with	erlang		# build the Erlang library
 %bcond_with	nodejs		# build nodejs library
-%bcond_without	lua		# build Lua library
+%bcond_with	lua		# build Lua library
 %bcond_without	python		# build the Python library
-%bcond_without	perl		# build the Perl library
-%bcond_without	php 		# build the PHP library
+%bcond_with	perl		# build the Perl library
+%bcond_with	php 		# build the PHP library
 %bcond_with	php_extension	# build the PHP_EXTENSION library
 %bcond_with	ruby		# build the Ruby library
 %bcond_with	haskell		# build the Haskell library
-%bcond_without	go		# build the Go library
+%bcond_with	go		# build the Go library
 %bcond_with	d		# build the D library
 
 %if %{with perl}
@@ -57,7 +56,7 @@ Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
 Version:	0.9.3
-Release:	2
+Release:	2.1
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://www.apache.org/dist/thrift/%{version}/%{name}-%{version}.tar.gz
@@ -233,6 +232,7 @@ Interfejs thrift dla Perla.
 	PERL_PREFIX=%{perl_vendorlib} \
 	%{__with_without cpp} \
 	%{__with_without qt4} \
+	%{__with_without qt5} \
 	%{__with_without c_glib} \
 	%{__with_without csharp} \
 	%{__with_without java} \
@@ -287,9 +287,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libthrift-%{version}.so
 %{_libdir}/libthriftnb-%{version}.so
 %{_libdir}/libthriftz-%{version}.so
-%{_libdir}/libthriftqt5-%{version}.so
 %if %{with qt4}
 %{_libdir}/libthriftqt-%{version}.so
+%endif
+%if %{with qt5}
+%{_libdir}/libthriftqt5-%{version}.so
 %endif
 %if %{with c_glib}
 %{_libdir}/libthrift_c_glib.so.*
@@ -312,10 +314,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/libthriftqt.la
 %{_pkgconfigdir}/thrift-qt.pc
 %endif
+%if %{with qt5}
 %{_libdir}/libthriftqt5.so
 %{_libdir}/libthriftqt5.la
 %{_pkgconfigdir}/thrift-qt5.pc
-
+%endif
 %if %{with c_glib}
 %{_libdir}/libthrift_c_glib.so
 %{_libdir}/libthrift_c_glib.la
@@ -330,7 +333,9 @@ rm -rf $RPM_BUILD_ROOT
 %if %{with qt4}
 %{_libdir}/libthriftqt.a
 %endif
+%if %{with qt5}
 %{_libdir}/libthriftqt5.a
+%endif
 %if %{with c_glib}
 %{_libdir}/libthrift_c_glib.a
 %endif
