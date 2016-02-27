@@ -35,7 +35,7 @@
 %bcond_with	lua		# build Lua library
 %bcond_without	python		# build the Python library
 %bcond_with	perl		# build the Perl library
-%bcond_with	php 		# build the PHP library
+%bcond_with	php		# build the PHP library
 %bcond_with	php_extension	# build the PHP_EXTENSION library
 %bcond_with	ruby		# build the Ruby library
 %bcond_with	haskell		# build the Haskell library
@@ -56,7 +56,7 @@ Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
 Version:	0.9.3
-Release:	3
+Release:	4
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://www.apache.org/dist/thrift/%{version}/%{name}-%{version}.tar.gz
@@ -272,6 +272,8 @@ rm -rf $RPM_BUILD_ROOT
 %{__mv} $RPM_BUILD_ROOT%{perl_vendorlib}/lib/perl5/Thrift{,.pm} $RPM_BUILD_ROOT%{perl_vendorlib}
 %endif
 
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -300,9 +302,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files devel
 %defattr(644,root,root,755)
-%{_libdir}/libthrift.la
-%{_libdir}/libthriftnb.la
-%{_libdir}/libthriftz.la
 %{_libdir}/libthrift.so
 %{_libdir}/libthriftnb.so
 %{_libdir}/libthriftz.so
@@ -312,17 +311,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_pkgconfigdir}/thrift.pc
 %if %{with qt4}
 %{_libdir}/libthriftqt.so
-%{_libdir}/libthriftqt.la
 %{_pkgconfigdir}/thrift-qt.pc
 %endif
 %if %{with qt5}
 %{_libdir}/libthriftqt5.so
-%{_libdir}/libthriftqt5.la
 %{_pkgconfigdir}/thrift-qt5.pc
 %endif
 %if %{with c_glib}
 %{_libdir}/libthrift_c_glib.so
-%{_libdir}/libthrift_c_glib.la
 %{_pkgconfigdir}/thrift_c_glib.pc
 %endif
 
