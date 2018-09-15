@@ -56,7 +56,7 @@ Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
 Version:	0.9.3
-Release:	4
+Release:	5
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://www.apache.org/dist/thrift/%{version}/%{name}-%{version}.tar.gz
