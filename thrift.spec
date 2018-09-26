@@ -47,7 +47,7 @@
 %endif
 
 %if 0%{!?php_name:1}
-%define		php_name	php55
+%define		php_name	php72
 %endif
 
 %define		php_min_version 5.3.0
@@ -55,12 +55,12 @@
 Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
-Version:	0.9.3
-Release:	5
+Version:	0.11.0
+Release:	1
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://www.apache.org/dist/thrift/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	88d667a8ae870d5adeca8cb7d6795442
+# Source0-md5:	0be59730ebce071eceaf6bfdb8d3a20e
 Patch0:		%{name}-Werror_strlcpy_fix.patch
 Patch1:		%{name}-cpp_link_fix.patch
 URL:		http://thrift.apache.org/
