@@ -1,0 +1,121 @@
+Description: do not use bundler as per Ruby policy
+ .
+Author: Laszlo Boszormenyi (GCS) <gcs@debian.org>
+Bug-Debian: https://bugs.debian.org/804668
+
+---
+The information above should follow the Patch Tagging Guidelines, please
+checkout http://dep.debian.net/deps/dep3/ to learn about the format. Here
+are templates for supplementary fields that you might want to add:
+
+Origin: <vendor|upstream|other>, <url of original patch>
+Bug: <url in upstream bugtracker>
+Bug-Debian: https://bugs.debian.org/<bugnumber>
+Bug-Ubuntu: https://launchpad.net/bugs/<bugnumber>
+Forwarded: <no|not-needed|url proving that it has been forwarded>
+Reviewed-By: <name and email of someone who approved the patch>
+Last-Update: <YYYY-MM-DD>
+
+--- thrift-0.9.3.orig/lib/rb/Makefile.am
++++ thrift-0.9.3/lib/rb/Makefile.am
+@@ -22,19 +22,23 @@ DESTDIR ?= /
+ if HAVE_BUNDLER
+ 
+ all-local:
+-	$(BUNDLER) install
+-	$(BUNDLER) exec rake build_ext
++	echo Do not use bundler for all-local
++#	$(BUNDLER) install
++#	$(BUNDLER) exec rake build_ext
+ 
+ install-exec-hook:
+-	$(BUNDLER) exec rake install
++	echo Do not use bundler for install-exec-hook
++#	$(BUNDLER) exec rake install
+ 
+ clean-local:
+-	$(BUNDLER) install
+-	$(BUNDLER) exec rake clean
++	echo Do not use bundler for clean-local
++#	$(BUNDLER) install
++#	$(BUNDLER) exec rake clean
+ 
+ check-local: all
+-	$(BUNDLER) install
+-	$(BUNDLER) exec rake
++	echo Do not use bundler for check-local
++#	$(BUNDLER) install
++#	$(BUNDLER) exec rake
+ 
+ endif
+ 
+--- thrift-0.9.3.orig/lib/rb/Makefile.in
++++ thrift-0.9.3/lib/rb/Makefile.in
+@@ -605,19 +605,19 @@ uninstall-am:
+ DESTDIR ?= /
+ 
+ @HAVE_BUNDLER_TRUE@all-local:
+-@HAVE_BUNDLER_TRUE@	$(BUNDLER) install
+-@HAVE_BUNDLER_TRUE@	$(BUNDLER) exec rake build_ext
++@HAVE_BUNDLER_TRUE@	echo No $(BUNDLER) install
++@HAVE_BUNDLER_TRUE@	echo No $(BUNDLER) exec rake build_ext
+ 
+ @HAVE_BUNDLER_TRUE@install-exec-hook:
+-@HAVE_BUNDLER_TRUE@	$(BUNDLER) exec rake install
++@HAVE_BUNDLER_TRUE@	echo No $(BUNDLER) exec rake install
+ 
+ @HAVE_BUNDLER_TRUE@clean-local:
+-@HAVE_BUNDLER_TRUE@	$(BUNDLER) install
+-@HAVE_BUNDLER_TRUE@	$(BUNDLER) exec rake clean
++@HAVE_BUNDLER_TRUE@	echo No $(BUNDLER) install
++@HAVE_BUNDLER_TRUE@	echo No $(BUNDLER) exec rake clean
+ 
+ @HAVE_BUNDLER_TRUE@check-local: all
+-@HAVE_BUNDLER_TRUE@	$(BUNDLER) install
+-@HAVE_BUNDLER_TRUE@	$(BUNDLER) exec rake
++@HAVE_BUNDLER_TRUE@	echo No $(BUNDLER) install
++@HAVE_BUNDLER_TRUE@	echo No $(BUNDLER) exec rake
+ 
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.
+ # Otherwise a system limit (for SysV at least) may be exceeded.
+--- thrift-0.9.3.orig/test/rb/Makefile
++++ thrift-0.9.3/test/rb/Makefile
+@@ -591,8 +591,9 @@ stubs: $(THRIFT) ../ThriftTest.thrift ..
+ precross: stubs
+ 
+ check: stubs
+-	$(BUNDLER) install
+-	$(BUNDLER) exec $(RUBY) -I. test_suite.rb
++	echo Do not use bundler for check
++#	$(BUNDLER) install
++#	$(BUNDLER) exec $(RUBY) -I. test_suite.rb
+ 
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.
+ # Otherwise a system limit (for SysV at least) may be exceeded.
+--- thrift-0.9.3.orig/test/rb/Makefile.am
++++ thrift-0.9.3/test/rb/Makefile.am
+@@ -27,7 +27,8 @@ precross: stubs
+ 
+ check: stubs
+ if HAVE_BUNDLER
+-	$(BUNDLER) install
+-	$(BUNDLER) exec $(RUBY) -I. test_suite.rb
++	echo Do not use bundler for check
++#	$(BUNDLER) install
++#	$(BUNDLER) exec $(RUBY) -I. test_suite.rb
+ endif
+ 
+--- thrift-0.9.3.orig/test/rb/Makefile.in
++++ thrift-0.9.3/test/rb/Makefile.in
+@@ -591,8 +591,9 @@ stubs: $(THRIFT) ../ThriftTest.thrift ..
+ precross: stubs
+ 
+ check: stubs
+-@HAVE_BUNDLER_TRUE@	$(BUNDLER) install
+-@HAVE_BUNDLER_TRUE@	$(BUNDLER) exec $(RUBY) -I. test_suite.rb
++@HAVE_BUNDLER_TRUE@	echo Do not use bundler for check
++@HAVE_BUNDLER_TRUE@	#$(BUNDLER) install
++@HAVE_BUNDLER_TRUE@	#$(BUNDLER) exec $(RUBY) -I. test_suite.rb
+ 
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.
+ # Otherwise a system limit (for SysV at least) may be exceeded.

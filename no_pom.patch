@@ -1,0 +1,18 @@
+Description: no need for ANT Maven task
+ Just disable its download.
+Author: Laszlo Boszormenyi (GCS) <gcs@debian.org>
+
+---
+
+--- thrift-0.9.2.orig/lib/java/build.xml
++++ thrift-0.9.2/lib/java/build.xml
+@@ -295,7 +295,9 @@
+   </target>
+ 
+   <target name="mvn.ant.tasks.download" depends="setup.init,mvn.ant.tasks.check,proxy" unless="mvn.ant.tasks.found">
++<!--
+     <get src="${mvn.ant.task.url}/${mvn.ant.task.jar}" dest="${build.tools.dir}/${mvn.ant.task.jar}" usetimestamp="true"/>
++-->
+   </target>
+ 
+   <target name="mvn.ant.tasks.check">

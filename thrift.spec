@@ -61,8 +61,9 @@ License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://www.apache.org/dist/thrift/%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	0be59730ebce071eceaf6bfdb8d3a20e
-Patch0:		%{name}-Werror_strlcpy_fix.patch
-Patch1:		%{name}-cpp_link_fix.patch
+Patch0:		no_bundler_use.patch
+Patch1:		no_grunt.patch
+Patch2:		no_pom.patch
 URL:		http://thrift.apache.org/
 BuildRequires:	autoconf
 BuildRequires:	automake >= 1:1.13
@@ -218,8 +219,9 @@ Interfejs thrift dla Perla.
 
 %prep
 %setup -q
-#%patch0 -p1
-#%patch1 -p1
+%patch0 -p1
+%patch1 -p1
+%patch2 -p1
 
 %build
 %{__aclocal} -I aclocal

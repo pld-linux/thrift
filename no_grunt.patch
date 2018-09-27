@@ -1,0 +1,10 @@
+--- thrift-0.11.0/configure.ac~	2017-12-03 20:11:35.000000000 +0100
++++ thrift-0.11.0/configure.ac	2018-09-27 15:33:08.540297485 +0200
+@@ -269,7 +269,6 @@ AX_THRIFT_LIB(nodejs, [Nodejs], yes)
+ have_nodejs=no
+ if test "$with_nodejs" = "yes"; then
+   AC_PATH_PROGS([NODEJS], [nodejs node])
+-  AC_PATH_PROG([NPM], [npm])
+   if test "x$NODEJS" != "x" -a "x$NPM" != "x"; then
+     have_nodejs="yes"
+   fi
