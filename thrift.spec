@@ -56,7 +56,7 @@ Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
 Version:	0.11.0
-Release:	1
+Release:	2
 License:	Apache v2.0
 Group:		Development/Libraries
 Source0:	http://www.apache.org/dist/thrift/%{version}/%{name}-%{version}.tar.gz
@@ -249,6 +249,7 @@ Interfejs thrift dla Perla.
 	%{__with_without haskell} \
 	%{__with_without go} \
 	%{__with_without d} \
+	--without-rs \
 	--enable-libs \
 	--with-boost \
 	--with-libevent \
