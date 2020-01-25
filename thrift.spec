@@ -51,7 +51,6 @@
 %endif
 
 %define		php_min_version 5.3.0
-%include	/usr/lib/rpm/macros.perl
 Summary:	Framework for scalable cross-language services development
 Summary(pl.UTF-8):	Szkielet budowania skalowalnych usług dla różnych języków programowania
 Name:		thrift
