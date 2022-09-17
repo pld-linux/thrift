@@ -1,4 +1,5 @@
 # TODO
+# - python3 interface
 # - rename -libs to -cpp, -devel to -cpp-devel, -static to -cpp-static?
 # - no SONAME ext in -libs, enforce some?
 # - BR for java, ruby, perl, more general BR
@@ -9,6 +10,7 @@
 # - Fix ruby install
 # - Add Mono
 # - Fix parallel build make.
+# - dart?
 #
 # TODO (2) - fix or disable
 # - java - br, build, files - icedtea7 ?
@@ -17,6 +19,9 @@
 # - ruby - build, files, some gems required for build?
 # - haskell - build, files
 # - d - needs working dmd or gdm to build
+# - golang
+# - rust (>= 1.13)
+# - haxe (>= 3.1.3)
 #
 # Conditional build:
 #
@@ -64,41 +69,51 @@ Patch0:		no_bundler_use.patch
 Patch1:		no_grunt.patch
 Patch2:		no_pom.patch
 URL:		http://thrift.apache.org/
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.65
 BuildRequires:	automake >= 1:1.13
 BuildRequires:	bison >= 2.5
 BuildRequires:	boost-devel >= 1.54.0
 BuildRequires:	flex
-BuildRequires:	libevent-devel
+BuildRequires:	libevent-devel >= 1.0
+BuildRequires:	libstdc++-devel
+BuildRequires:	openssl-devel
 BuildRequires:	pkgconfig
 BuildRequires:	python-devel >= 1:2.4
 BuildRequires:	rpm-pythonprov
 BuildRequires:	rpmbuild(macros) >= 1.219
 BuildRequires:	zlib-devel >= 1.2.3
 %if %{with qt4}
-BuildRequires:	QtNetwork-devel
+BuildRequires:	QtCore-devel >= 4.3
+BuildRequires:	QtNetwork-devel >= 4.3
+BuildRequires:	qt4-build >= 4.3
+%endif
+%if %{with qt5}
+BuildRequires:	Qt5Core-devel >= 5.0
+BuildRequires:	Qt5Network-devel >= 5.0
+BuildRequires:	qt5-build >= 5.0
 %endif
 %if %{with c_glib}
-BuildRequires:	glib2-devel
+BuildRequires:	glib2-devel >= 2.0
 %endif
 %if %{with csharp}
-BuildRequires:	mono-csharp
-BuildRequires:	mono-devel
+BuildRequires:	mono-csharp >= 2.11.0
+BuildRequires:	mono-devel >= 2.11.0
 %endif
 %if %{with java}
+BuildRequires:	ant >= 1.7
 BuildRequires:	java-gcj-compat-devel
 BuildRequires:	java-ivy
 %endif
 %if %{with lua}
-BuildRequires:	lua51-devel
+BuildRequires:	lua52-devel >= 5.2
 %endif
 %if %{with nodejs}
 BuildRequires:	nodejs
 BuildRequires:	npm
 %endif
 %if %{with python}
-BuildRequires:	python
-BuildRequires:	python-TwistedCore
+BuildRequires:	python >= 1:2.6
+BuildRequires:	python-twisted
 %endif
 %if %{with perl}
 BuildRequires:	perl-Bit-Vector
@@ -146,41 +161,41 @@ do tworzenie usług które spawnie działają pomiędzy C++, Javą,
 Pythonem, PHP, Rybym, Erlangiem, Perlem, Haskellem, C#, Cocoa,
 Smalltalikiem i Ocamlem.
 
-%package devel
-Summary:	C++ header files
-Summary(pl.UTF-8):	Pliki nagłówkowe i bibliotek iterfejsu C++ thrift
-Group:		Development/Libraries
-Requires:	%{name}-libs = %{version}-%{release}
-
-%description devel
-Header and libarary files for C++ thrift inteface.
-
-%description devel -l pl.UTF-8
-Pliki nagłówkowe i bibliotek iterfejsu C++ thrift.
-
-%package static
-Summary:	Thrift C++ static libraries
-Summary(pl.UTF-8):	Biblioteki statyczne iterfejsu C++ thrift
-Group:		Development/Libraries
-Requires:	%{name}-devel = %{version}-%{release}
-
-%description static
-Static libarary files for C++ thrift inteface.
-
-%description static -l pl.UTF-8
-Statyczne biblioteki iterfejsu C++ thrift.
-
 %package libs
-Summary:	C++ thrift interface libraries
-Summary(pl.UTF-8):	Interfejs thrift dla C++
+Summary:	C++ Thrift interface libraries
+Summary(pl.UTF-8):	Interfejs Thrift dla C++
 Group:		Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description libs
-C++ thrift interface libraries
+C++ Thrift interface libraries
 
 %description libs -l pl.UTF-8
-Biblioteki interfejsu thrift dla C++.
+Biblioteki interfejsu Thrift dla C++.
+
+%package devel
+Summary:	C++ Thrift interface header files
+Summary(pl.UTF-8):	Pliki nagłówkowe interfejsu C++ Thrift
+Group:		Development/Libraries
+Requires:	%{name}-libs = %{version}-%{release}
+
+%description devel
+Header files for C++ Thrift interface.
+
+%description devel -l pl.UTF-8
+Pliki nagłówkowe interfejsu C++ Thrift.
+
+%package static
+Summary:	Thrift C++ static libraries
+Summary(pl.UTF-8):	Biblioteki statyczne interfejsu C++ Thrift
+Group:		Development/Libraries
+Requires:	%{name}-devel = %{version}-%{release}
+
+%description static
+Static library files for C++ Thrift interface.
+
+%description static -l pl.UTF-8
+Statyczne biblioteki interfejsu C++ Thrift.
 
 %package -n php-%{name}
 Summary:	PHP Thrift interface
@@ -192,29 +207,32 @@ Requires:	php(core) >= %{php_min_version}
 %description -n php-%{name}
 PHP Thrift interface.
 
+%description -n php-%{name} -l pl.UTF-8
+Interfejs Thrift dla PHP.
+
 %package -n python-%{name}
-Summary:	Python thrift interface
-Summary(pl.UTF-8):	Interfejs thrift dla Pythona
+Summary:	Python Thrift interface
+Summary(pl.UTF-8):	Interfejs Thrift dla Pythona
 Group:		Development/Languages/Python
 Requires:	%{name} = %{version}-%{release}
 
 %description -n python-%{name}
-Python thrift interface.
+Python Thrift interface.
 
 %description -n python-%{name} -l pl.UTF-8
-Interfejs thrift dla Pythona.
+Interfejs Thrift dla Pythona.
 
 %package -n perl-Thrift
-Summary:	Perl thrift interface
-Summary(pl.UTF-8):	Interfejs thrift dla Perla
+Summary:	Perl Thrift interface
+Summary(pl.UTF-8):	Interfejs Thrift dla Perla
 Group:		Development/Languages/Perl
 Requires:	%{name} = %{version}-%{release}
 
 %description -n perl-Thrift
-Perl thrift interface.
+Perl Thrift interface.
 
 %description -n perl-Thrift -l pl.UTF-8
-Interfejs thrift dla Perla.
+Interfejs Thrift dla Perla.
 
 %prep
 %setup -q
@@ -231,31 +249,32 @@ Interfejs thrift dla Perla.
 	PHP_PREFIX=%{php_data_dir} \
 	PHP=%{__php} \
 	PERL_PREFIX=%{perl_vendorlib} \
-	%{__with_without cpp} \
-	%{__with_without qt4} \
-	%{__with_without qt5} \
+	TRIAL=/usr/bin/trial-2 \
+	--enable-libs \
+	--disable-tutorial \
+	--disable-tests \
+	--with-boost \
 	%{__with_without c_glib} \
 	%{__with_without csharp} \
-	%{__with_without java} \
+	%{__with_without cpp} \
+	%{__with_without d} \
 	%{__with_without erlang} \
+	%{__with_without go} \
+	%{__with_without java} \
+	%{__with_without haskell} \
+	--with-libevent \
+	%{__with_without lua} \
 	%{__with_without nodejs} \
 	%{__with_without python} \
-	%{__with_without lua} \
 	%{__with_without perl} \
 	%{__with_without php} \
 	%{__with_without php_extension} \
-	%{__with_without ruby} \
-	%{__with_without haskell} \
-	%{__with_without go} \
-	%{__with_without d} \
+	%{__with_without qt4} \
+	%{__with_without qt5} \
 	--without-rs \
-	--enable-libs \
-	--with-boost \
-	--with-libevent \
-	--with-zlib \
-	--disable-tutorial \
-	--disable-tests \
-	%{__with_without tests}
+	%{__with_without ruby} \
+	%{__with_without tests} \
+	--with-zlib
 
 %{__make} -j1
 
